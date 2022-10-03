@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.10-slim
+FROM --platform=linux/arm64 python:3.10-slim
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="$PATH:$POETRY_HOME/bin:/usr/local/bin"
 RUN poetry config virtualenvs.create false
 
-RUN curl -Lo /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.7/aws-lambda-rie \
+RUN curl -Lo /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.8/aws-lambda-rie-arm64 \
     && chmod 755 /usr/local/bin/aws-lambda-rie
 
 COPY poetry.lock pyproject.toml ./

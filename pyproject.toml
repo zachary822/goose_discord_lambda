@@ -9,6 +9,7 @@ packages = [{include = "goose_discord_webhook"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 awslambdaric = "^2.0.4"
+boto3 = "^1.24.85"
 
 
 [build-system]
