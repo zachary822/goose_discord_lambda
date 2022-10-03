@@ -1,0 +1,9 @@
+services:
+  lambda:
+    image: standup-lambda:latest
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    entrypoint: "/usr/local/bin/aws-lambda-rie"
+    command: ["python", "-m", "awslambdaric", "main.handler"]
