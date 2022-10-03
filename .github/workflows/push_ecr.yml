@@ -1,11 +1,10 @@
-name: Deploy to ECR
-
+name: Deploy Lambda
 on:
   push:
     branches: [main]
 jobs:
   build:
-    name: Build Image
+    name: Deploy Image
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: standup-lambda
