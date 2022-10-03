@@ -7,6 +7,10 @@ jobs:
   build:
     name: Build Image
     runs-on: ubuntu-latest
+    env:
+      ECR_REPOSITORY: standup-lambda
+      IMAGE_TAG: latest
+      FUNCTION_NAME: standup-reminder
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -22,13 +26,11 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: standup-lambda
-          IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Update lambda function
         env:
-          FUNCTION_NAME: standup-reminder
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           aws lambda update-function-code --function-name $FUNCTION_NAME --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
