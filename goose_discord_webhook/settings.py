@@ -54,6 +54,7 @@ class CustomBaseSettings(BaseSettings):
 
 class Settings(CustomBaseSettings):
     WEBHOOK_URL: SecretStr
+    MESSAGE: str
 
     class Config:
         parameter_path = "/discord"

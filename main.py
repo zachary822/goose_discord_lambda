@@ -17,7 +17,7 @@ settings = Settings()
 def handler(event, context):
     resp = requests.post(
         settings.WEBHOOK_URL.get_secret_value(),
-        data=WebhookParams(content="Riveting content!").json(),
+        data=WebhookParams(content=settings.MESSAGE).json(),
         headers={"content-type": "application/json"},
     )
     logger.info("Status: %s Body: %s", resp.status_code, resp.text)
