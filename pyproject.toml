@@ -17,3 +17,16 @@ requests = "^2.28.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+show_error_codes = true
+plugins = ["pydantic.mypy"]
+
+[tool.isort]
+profile = "black"
+case_sensitive = false
+line_length = 120
+filter_files = true
+
+[tool.black]
+line_length = 120

@@ -10,7 +10,7 @@ client = boto3.client("ssm")
 
 def parameter_store_settings(settings: BaseSettings) -> dict[str, Any]:
     try:
-        prefix = Path(settings.__config__.parameter_path)
+        prefix = Path(settings.__config__.parameter_path)  # type: ignore[attr-defined]
         names = [str(prefix / n) for n in settings.__fields__.keys()]
     except TypeError:
         prefix = None
@@ -44,7 +44,12 @@ class CustomBaseSettings(BaseSettings):
             env_settings: SettingsSourceCallable,
             file_secret_settings: SettingsSourceCallable,
         ) -> tuple[SettingsSourceCallable, ...]:
-            return init_settings, env_settings, parameter_store_settings, file_secret_settings
+            return (
+                init_settings,
+                env_settings,
+                parameter_store_settings,
+                file_secret_settings,
+            )
 
 
 class Settings(CustomBaseSettings):

@@ -3,3 +3,5 @@
 **/__pycache__/
 .github
 .gitignore
+.pre-commit-config.yaml
+docker-compose.yaml
