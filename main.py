@@ -3,8 +3,8 @@ from pathlib import Path
 
 import requests
 
-from goose_discord_webhook.schemas import WebhookParams
-from goose_discord_webhook.settings import Settings
+from goose_discord.schemas import WebhookParams
+from goose_discord.settings import Settings
 
 with (Path(__file__).resolve().parent / "logging.conf").open("r") as f:
     logging.config.fileConfig(f)

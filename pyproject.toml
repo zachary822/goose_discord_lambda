@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Zachary Juang <zachary822@me.com>"]
 readme = "README.md"
-packages = [{include = "goose_discord_webhook"}]
+packages = [{include = "goose_discord"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
