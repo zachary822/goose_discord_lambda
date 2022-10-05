@@ -3,7 +3,7 @@ from pathlib import Path
 
 import requests
 
-from goose_discord_webhook.schemas import AllowedMentions, MentionType, WebhookParams
+from goose_discord_webhook.schemas import WebhookParams
 from goose_discord_webhook.settings import Settings
 
 with (Path(__file__).resolve().parent / "logging.conf").open("r") as f:
@@ -17,9 +17,6 @@ settings = Settings()
 def handler(event, context):
     data = WebhookParams(
         content=settings.MESSAGE,
-        allowed_mentions=AllowedMentions(
-            parse=[MentionType.users],
-        ),
     )
 
     resp = requests.post(
