@@ -1,5 +1,5 @@
 services:
-  lambda:
+  standup-bot:
     image: standup-lambda:latest
     build:
       context: ./
@@ -12,4 +12,18 @@ services:
     volumes:
       - "./:/app"
     entrypoint: "/usr/local/bin/aws-lambda-rie"
-    command: ["python", "-m", "awslambdaric", "main.handler"]
+    command: ["python", "-m", "awslambdaric", "handlers.main.handler"]
+  command:
+    image: standup-lambda:latest
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    environment:
+      - AWS_DEFAULT_REGION
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    volumes:
+      - "./:/app"
+    entrypoint: "/usr/local/bin/aws-lambda-rie"
+    command: [ "python", "-m", "awslambdaric", "handlers.command.handler" ]

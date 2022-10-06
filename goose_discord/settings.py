@@ -2,7 +2,7 @@ from pathlib import PurePosixPath as Path
 from typing import Any
 
 import boto3
-from pydantic import BaseSettings, SecretStr
+from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
 
 client = boto3.client("ssm")
@@ -50,11 +50,3 @@ class CustomBaseSettings(BaseSettings):
                 parameter_store_settings,
                 file_secret_settings,
             )
-
-
-class Settings(CustomBaseSettings):
-    WEBHOOK_URL: SecretStr
-    MESSAGE: str
-
-    class Config:
-        parameter_path = "/discord"

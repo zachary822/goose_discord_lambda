@@ -1,15 +1,21 @@
-import logging.config
-from pathlib import Path
+import logging
 
 import requests
+from pydantic import SecretStr
 
 from goose_discord.schemas import WebhookParams
-from goose_discord.settings import Settings
-
-with (Path(__file__).resolve().parent / "logging.conf").open("r") as f:
-    logging.config.fileConfig(f)
+from goose_discord.settings import CustomBaseSettings
 
 logger = logging.getLogger(__name__)
+
+
+class Settings(CustomBaseSettings):
+    WEBHOOK_URL: SecretStr
+    MESSAGE: str
+
+    class Config:
+        parameter_path = "/discord"
+
 
 settings = Settings()
 
