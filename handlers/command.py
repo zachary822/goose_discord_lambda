@@ -32,8 +32,8 @@ def handler(event, context):
 
     try:
         verify_key.verify(
-            (event["headers"]["X-Signature-Timestamp"] + event["body"]).encode(),
-            bytes.fromhex(event["headers"]["X-Signature-Ed25519"]),
+            (event["headers"]["x-signature-timestamp"] + event["body"]).encode(),
+            bytes.fromhex(event["headers"]["x-signature-ed25519"]),
         )
     except BadSignatureError:
         return {
