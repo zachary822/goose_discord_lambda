@@ -19,7 +19,6 @@ jobs:
     env:
       ECR_REPOSITORY: standup-lambda
       IMAGE_TAG: latest
-      FUNCTION_NAME: standup-reminder
     steps:
       - uses: actions/checkout@v3
       - name: Configure AWS credentials
@@ -47,4 +46,5 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          aws lambda update-function-code --function-name $FUNCTION_NAME --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          aws lambda update-function-code --function-name standup-reminder --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          aws lambda update-function-code --function-name discord-slash-command --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
