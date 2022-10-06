@@ -1,4 +1,5 @@
 import json
+import logging
 
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
@@ -6,6 +7,8 @@ from pydantic import SecretBytes, ValidationError, validator
 
 from goose_discord.schemas import Interaction
 from goose_discord.settings import CustomBaseSettings
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(CustomBaseSettings):
@@ -24,6 +27,9 @@ verify_key = VerifyKey(settings.PUBLIC_KEY.get_secret_value())
 
 
 def handler(event, context):
+    if logger.isEnabledFor(logging.INFO):
+        logger.info(json.dumps(event))
+
     try:
         verify_key.verify(
             (event["headers"]["X-Signature-Timestamp"] + event["body"]).encode(),
