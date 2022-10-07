@@ -2,6 +2,7 @@ import json
 import logging
 from secrets import choice
 
+import boto3
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 from pydantic import Json, SecretBytes, ValidationError, validator
@@ -27,6 +28,8 @@ class Settings(CustomBaseSettings):
 settings = Settings()
 verify_key = VerifyKey(settings.PUBLIC_KEY.get_secret_value())
 
+events = boto3.client("events")
+
 
 def handler(event, context):
     if logger.isEnabledFor(logging.INFO):
@@ -45,6 +48,10 @@ def handler(event, context):
                 "Content-Type": "application/json",
             },
         }
+
+    events.put_events(
+        Entries=[{"Source": "discord.interaction", "DetailType": "interaction-body", "Detail": event["body"]}]
+    )
 
     try:
         interaction: Interaction = Interaction.parse_raw(event["body"])
@@ -75,7 +82,7 @@ def handler(event, context):
                 ).dict(by_alias=True)
             case Interaction(type=2, data=SlashCommand(name="quotes")):
                 quote = choice(settings.QUOTES)
-                logger.info("Quotes: %s | quote: %s", settings.QUOTES, quote)
+                logger.info("Quote: %s", quote)
 
                 return LambdaResponse(
                     status_code=200,
