@@ -46,7 +46,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          lambdas=( command-fun standup-reminder discord-slash-command )
+          lambdas=( standup-reminder discord-slash-command command-fun command-quotes)
           for lambda in "${lambdas[@]}"
           do
             aws lambda update-function-code --function-name $lambda --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
