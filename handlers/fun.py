@@ -1,10 +1,15 @@
+import logging
+
 import requests
 
 from goose_discord.schemas import Interaction, LambdaResponse
 
+logger = logging.getLogger(__name__)
+
 
 def handler(event, context):
     interaction = Interaction(**event["detail"])
+    logging.info(interaction)
 
     with requests.Session() as session:
         resp = session.post(
@@ -16,6 +21,7 @@ def handler(event, context):
                 },
             },
         )
+        logging.info("status: %s body: %s", resp.status_code, resp.text)
 
     return LambdaResponse(
         status_code=resp.status_code,
