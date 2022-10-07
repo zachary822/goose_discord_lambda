@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 def handler(event, context):
     interaction = Interaction(**event["detail"])
+    print(interaction)
 
     if logger.isEnabledFor(logging.INFO):
         logging.info("Interaction: %s", interaction.json())
