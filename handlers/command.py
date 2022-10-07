@@ -73,7 +73,7 @@ def handler(event, context):
                     headers={
                         "Content-Type": "application/json",
                     },
-                ).dict(by_alias=True)
+                ).dict()
             case Interaction(type=2, data=SlashCommand(name="fun")):
                 return LambdaResponse(
                     status_code=200,
@@ -86,7 +86,7 @@ def handler(event, context):
                     headers={
                         "Content-Type": "application/json",
                     },
-                ).dict(by_alias=True)
+                ).dict()
             case Interaction(type=2, data=SlashCommand(name="quotes")):
                 quote = choice(settings.QUOTES)
                 logger.info("Quote: %s", quote)
@@ -102,7 +102,7 @@ def handler(event, context):
                     headers={
                         "Content-Type": "application/json",
                     },
-                ).dict(by_alias=True)
+                ).dict()
     except ValidationError:
         pass
 

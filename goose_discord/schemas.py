@@ -40,7 +40,7 @@ def to_camel(string: str) -> str:
 class LambdaResponse(BaseModel):
     status_code: int
     body: JsonStr
-    headers: dict
+    headers: Optional[dict]
 
     @validator("body", pre=True)
     def convert_json(cls, v):
@@ -51,6 +51,9 @@ class LambdaResponse(BaseModel):
     class Config:
         allow_population_by_field_name = True
         alias_generator = to_camel
+
+    def dict(self, *, by_alias=True, exclude_none=True, **kwargs):
+        return self.dict(by_alias=by_alias, exclude_none=exclude_none, **kwargs)
 
 
 class User(BaseModel):
