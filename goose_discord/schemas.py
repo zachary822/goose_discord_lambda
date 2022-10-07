@@ -1,7 +1,12 @@
 from enum import Enum
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
-from pydantic import BaseModel, Field, SecretStr, constr
+from pydantic import BaseModel, Field, SecretStr, constr, validator
+
+if TYPE_CHECKING:
+    JsonStr = Any
+else:
+    JsonStr = str
 
 
 class MentionType(str, Enum):
@@ -25,6 +30,27 @@ class Token(BaseModel):
     expires_in: int
     scope: str
     token_type: str
+
+
+def to_camel(string: str) -> str:
+    words = string.split("_")
+    return words[0].casefold() + "".join(word.capitalize() for word in words[1:])
+
+
+class LambdaResponse(BaseModel):
+    status_code: int
+    body: JsonStr
+    headers: dict
+
+    @validator("body", pre=True)
+    def convert_json(cls, v):
+        if isinstance(v, str):
+            return v
+        return cls.__config__.json_dumps(v, default=cls.__json_encoder__)
+
+    class Config:
+        allow_population_by_field_name = True
+        alias_generator = to_camel
 
 
 class User(BaseModel):

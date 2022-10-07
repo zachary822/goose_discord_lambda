@@ -1,11 +1,12 @@
 import json
 import logging
+from secrets import choice
 
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
-from pydantic import SecretBytes, ValidationError, validator
+from pydantic import Json, SecretBytes, ValidationError, validator
 
-from goose_discord.schemas import Interaction
+from goose_discord.schemas import Interaction, LambdaResponse, SlashCommand
 from goose_discord.settings import CustomBaseSettings
 
 logger = logging.getLogger(__name__)
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class Settings(CustomBaseSettings):
     PUBLIC_KEY: SecretBytes
+    QUOTES: Json[list[str]]
 
     @validator("PUBLIC_KEY", pre=True)
     def convert_public_key(cls, v):
@@ -47,29 +49,45 @@ def handler(event, context):
     try:
         interaction: Interaction = Interaction.parse_raw(event["body"])
 
-        if interaction.type == 1:
-            return {
-                "statusCode": 200,
-                "body": json.dumps({"type": 1}),
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-            }
-        elif interaction.type == 2:
-            return {
-                "statusCode": 200,
-                "body": json.dumps(
-                    {
+        match interaction:
+            case Interaction(type=1):
+                return LambdaResponse(
+                    status_code=200,
+                    body={
+                        "type": 1,
+                    },
+                    headers={
+                        "Content-Type": "application/json",
+                    },
+                ).dict(by_alias=True)
+            case Interaction(type=2, data=SlashCommand(name="fun")):
+                return LambdaResponse(
+                    status_code=200,
+                    body={
                         "type": 4,
                         "data": {
                             "content": "Riveting content!",
                         },
-                    }
-                ),
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-            }
+                    },
+                    headers={
+                        "Content-Type": "application/json",
+                    },
+                ).dict(by_alias=True)
+            case Interaction(type=2, data=SlashCommand(name="quotes")):
+                quote = choice(settings.QUOTES)
+
+                return LambdaResponse(
+                    status_code=200,
+                    body={
+                        "type": 4,
+                        "data": {
+                            "content": f"> {quote}",
+                        },
+                    },
+                    headers={
+                        "Content-Type": "application/json",
+                    },
+                ).dict(by_alias=True)
     except ValidationError:
         pass
 
