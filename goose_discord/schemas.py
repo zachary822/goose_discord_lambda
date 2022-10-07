@@ -53,7 +53,7 @@ class LambdaResponse(BaseModel):
         alias_generator = to_camel
 
     def dict(self, *, by_alias=True, exclude_none=True, **kwargs):
-        return self.dict(by_alias=by_alias, exclude_none=exclude_none, **kwargs)
+        return super().dict(by_alias=by_alias, exclude_none=exclude_none, **kwargs)
 
 
 class User(BaseModel):
