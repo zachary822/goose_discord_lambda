@@ -1,13 +1,12 @@
 import json
 import logging
-from secrets import choice
 
 import boto3
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 from pydantic import Json, SecretBytes, ValidationError, validator
 
-from goose_discord.schemas import Interaction, LambdaResponse, SlashCommand
+from goose_discord.schemas import Interaction, LambdaResponse
 from goose_discord.settings import CustomBaseSettings
 
 logger = logging.getLogger(__name__)
@@ -69,22 +68,6 @@ def handler(event, context):
                     status_code=200,
                     body={
                         "type": 1,
-                    },
-                    headers={
-                        "Content-Type": "application/json",
-                    },
-                ).dict()
-            case Interaction(type=2, data=SlashCommand(name="quotes")):
-                quote = choice(settings.QUOTES)
-                logger.info("Quote: %s", quote)
-
-                return LambdaResponse(
-                    status_code=200,
-                    body={
-                        "type": 4,
-                        "data": {
-                            "content": f"> {quote}",
-                        },
                     },
                     headers={
                         "Content-Type": "application/json",
