@@ -74,19 +74,6 @@ def handler(event, context):
                         "Content-Type": "application/json",
                     },
                 ).dict()
-            case Interaction(type=2, data=SlashCommand(name="fun")):
-                return LambdaResponse(
-                    status_code=200,
-                    body={
-                        "type": 4,
-                        "data": {
-                            "content": "Riveting content!",
-                        },
-                    },
-                    headers={
-                        "Content-Type": "application/json",
-                    },
-                ).dict()
             case Interaction(type=2, data=SlashCommand(name="quotes")):
                 quote = choice(settings.QUOTES)
                 logger.info("Quote: %s", quote)
@@ -98,6 +85,16 @@ def handler(event, context):
                         "data": {
                             "content": f"> {quote}",
                         },
+                    },
+                    headers={
+                        "Content-Type": "application/json",
+                    },
+                ).dict()
+            case Interaction(type=2):
+                return LambdaResponse(
+                    status_code=200,
+                    body={
+                        "type": 5,
                     },
                     headers={
                         "Content-Type": "application/json",
