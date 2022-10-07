@@ -15,7 +15,7 @@ def handler(event, context):
 
     with requests.Session() as session:
         resp = session.post(
-            f"https://discord.com/api/webhooks/{interaction.id}/{interaction.token}",
+            f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}",
             json={
                 "type": 4,
                 "data": {
