@@ -11,7 +11,9 @@ def handler(event, context):
             f"https://discord.com/api/v10/interactions/{interaction.id}/{interaction.token}/callback",
             json={
                 "type": 4,
-                "content": "Riveting content!",
+                "data": {
+                    "content": "Riveting content!",
+                },
             },
         )
 
