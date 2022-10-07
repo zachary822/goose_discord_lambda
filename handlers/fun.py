@@ -13,7 +13,7 @@ def handler(event, context):
 
     with requests.Session() as session:
         resp = session.post(
-            f"https://discord.com/api/v10/interactions/{interaction.id}/{interaction.token}/callback",
+            f"https://discord.com/api/webhooks/{interaction.id}/{interaction.token}",
             json={
                 "type": 4,
                 "data": {
