@@ -9,7 +9,9 @@ logger = logging.getLogger(__name__)
 
 def handler(event, context):
     interaction = Interaction(**event["detail"])
-    logging.info(interaction)
+
+    if logger.isEnabledFor(logging.INFO):
+        logging.info("Interaction: %s", interaction.json())
 
     with requests.Session() as session:
         resp = session.post(
