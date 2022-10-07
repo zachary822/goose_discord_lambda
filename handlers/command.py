@@ -75,6 +75,7 @@ def handler(event, context):
                 ).dict(by_alias=True)
             case Interaction(type=2, data=SlashCommand(name="quotes")):
                 quote = choice(settings.QUOTES)
+                logger.info("Quotes: %s | quote: %s", settings.QUOTES, quote)
 
                 return LambdaResponse(
                     status_code=200,
