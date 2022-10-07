@@ -9,10 +9,9 @@ logger = logging.getLogger(__name__)
 
 def handler(event, context):
     interaction = Interaction(**event["detail"])
-    print(interaction)
 
     if logger.isEnabledFor(logging.INFO):
-        logging.info("Interaction: %s", interaction.json())
+        logger.info("Interaction: %s", interaction.json())
 
     with requests.Session() as session:
         resp = session.post(
@@ -24,7 +23,7 @@ def handler(event, context):
                 },
             },
         )
-        logging.info("status: %s body: %s", resp.status_code, resp.text)
+        logger.info("status: %s body: %s", resp.status_code, resp.text)
 
     return LambdaResponse(
         status_code=resp.status_code,
