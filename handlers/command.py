@@ -50,7 +50,14 @@ def handler(event, context):
         }
 
     events.put_events(
-        Entries=[{"Source": "discord.interaction", "DetailType": "interaction-body", "Detail": event["body"]}]
+        Entries=[
+            {
+                "Source": "discord.interaction",
+                "DetailType": "interaction-body",
+                "Detail": event["body"],
+                "TraceHeader": event["headers"]["x-amzn-trace-id"],
+            }
+        ]
     )
 
     try:
