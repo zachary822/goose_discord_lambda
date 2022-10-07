@@ -14,8 +14,8 @@ def handler(event, context):
         logger.info("Interaction: %s", interaction.json())
 
     with requests.Session() as session:
-        resp = session.post(
-            f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}",
+        resp = session.patch(
+            f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}/messages/@original",
             json={
                 "type": 4,
                 "data": {
