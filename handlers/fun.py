@@ -15,12 +15,9 @@ def handler(event, context):
 
     with requests.Session() as session:
         resp = session.patch(
-            f"https://discord.com/api/webhooks/{interaction.id}/{interaction.token}/messages/@original",
+            f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}/messages/@original",
             json={
-                "type": 4,
-                "data": {
-                    "content": "Riveting content!",
-                },
+                "content": "Riveting content!",
             },
         )
         logger.info("status: %s body: %s", resp.status_code, resp.text)
