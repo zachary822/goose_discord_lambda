@@ -54,7 +54,6 @@ def handler(event, context):
                 "Source": "discord-lambda",
                 "DetailType": "discord.interaction",
                 "Detail": event["body"],
-                "TraceHeader": event["headers"]["x-amzn-trace-id"],
             }
         ]
     )
