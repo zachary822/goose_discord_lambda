@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Optional, Union
 
-from pydantic import BaseModel, Field, SecretStr, constr, validator
+from pydantic import BaseModel, Field, constr, validator
 
 if TYPE_CHECKING:
     JsonStr = Any
@@ -23,13 +23,6 @@ class AllowedMentions(BaseModel):
 class WebhookParams(BaseModel):
     content: constr(strip_whitespace=True, max_length=2000)  # type: ignore[valid-type]
     allowed_mentions: Optional[AllowedMentions]
-
-
-class Token(BaseModel):
-    access_token: SecretStr
-    expires_in: int
-    scope: str
-    token_type: str
 
 
 def to_camel(string: str) -> str:
