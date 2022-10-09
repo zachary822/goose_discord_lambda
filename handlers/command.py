@@ -77,6 +77,9 @@ def handler(event, context):
                     status_code=200,
                     body={
                         "type": 5,
+                        "data": {
+                            "flags": 1 << 6,
+                        },
                     },
                     headers={
                         "Content-Type": "application/json",
