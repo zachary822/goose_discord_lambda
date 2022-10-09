@@ -27,12 +27,14 @@ def handler(event, context):
             json={
                 "content": (
                     f"Sentiment: {result['Sentiment']}\n"
-                    + f"Scores: Positive: {result['SentimentScore']['Positive']} | "
-                    + f"Negative: {result['SentimentScore']['Negative']} | "
-                    + f"Neutral: {result['SentimentScore']['Neutral']} | "
-                    + f"Mixed: {result['SentimentScore']['Mixed']}\n"
-                    + f"original: https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id}"  # noqa: E501
+                    f"Scores:\n"
+                    f"  Positive: {result['SentimentScore']['Positive']}\n"
+                    f"  Negative: {result['SentimentScore']['Negative']}\n"
+                    f"  Neutral: {result['SentimentScore']['Neutral']}\n"
+                    f"  Mixed: {result['SentimentScore']['Mixed']}\n"
+                    f"original: https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id}"  # noqa: E501
                 ),
+                "flags": 1 << 6,
             },
         )
         logger.info("status: %s body: %s", resp.status_code, resp.text)
