@@ -8,9 +8,7 @@ from pydantic import constr
 from goose_discord.schemas import Interaction, LambdaResponse, Option, SlashCommand
 
 
-class Die(Option):
-    value: constr(regex=r"^d\d+$")  # type: ignore[valid-type]  # noqa: F722
-
+class Die(Option[constr(regex=r"^d\d+$")]):  # type: ignore[misc]
     @cached_property
     def sides(self) -> int:
         return int(self.value[1:])
@@ -25,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 def handler(event, context):
     interaction = Interaction[SlashCommand[tuple[Option[int], Die]]](**event["detail"])
-    number, die = interaction.data.options
+    rolls, die = interaction.data.options
 
     if logger.isEnabledFor(logging.INFO):
         logger.info("Interaction: %s", interaction.json())
@@ -36,7 +34,7 @@ def handler(event, context):
         resp = session.patch(
             f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}/messages/@original",
             json={
-                "content": f"dice rolls ({number}{die.value}): {' '.join(map(str, (random.randint(1, die.sides + 1) for _ in range(number))))}",  # noqa: E501
+                "content": f"dice rolls ({rolls.value}{die.value}): {' '.join(map(str, (random.randint(1, die.sides + 1) for _ in range(rolls.value))))}",  # noqa: E501
             },
         )
         logger.info("status: %s body: %s", resp.status_code, resp.text)
