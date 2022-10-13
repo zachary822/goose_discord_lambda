@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Generic, Optional, TypeVar
 
 from pydantic import BaseModel, Field, constr, validator
+from pydantic.generics import GenericModel
 
 if TYPE_CHECKING:
     JsonStr = Any
@@ -92,7 +93,10 @@ class InteractionData(BaseModel):
     type: int
 
 
-class Interaction(BaseModel):
+T = TypeVar("T")
+
+
+class Interaction(GenericModel, Generic[T]):
     application_id: str
     app_permissions: Optional[str]
     id: str
@@ -100,7 +104,7 @@ class Interaction(BaseModel):
     guild_id: str
     token: str
     type: int
-    data: Optional[Union[InteractionData, SlashCommand, dict]]
+    data: Optional[T]
     user: Optional[User]
     member: Optional[Member]
     version: int

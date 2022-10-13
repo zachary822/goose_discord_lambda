@@ -6,7 +6,7 @@ from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 from pydantic import SecretBytes, ValidationError, validator
 
-from goose_discord.schemas import Interaction, LambdaResponse, SlashCommand
+from goose_discord.schemas import Interaction, LambdaResponse
 from goose_discord.settings import CustomBaseSettings
 
 logger = logging.getLogger(__name__)
@@ -70,7 +70,7 @@ def handler(event, context):
                         "Content-Type": "application/json",
                     },
                 ).dict()
-            case Interaction(type=2, data=SlashCommand(type=1)):
+            case Interaction(type=2, data={"type": 1}):
                 return LambdaResponse(
                     status_code=200,
                     body={

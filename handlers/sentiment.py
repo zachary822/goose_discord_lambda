@@ -4,7 +4,7 @@ import logging
 import boto3
 import requests
 
-from goose_discord.schemas import Interaction, LambdaResponse
+from goose_discord.schemas import Interaction, InteractionData, LambdaResponse
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ def handler(event, context):
     if logger.isEnabledFor(logging.INFO):
         logger.info("Event: %s", json.dumps(event))
 
-    interaction = Interaction(**event["detail"])
+    interaction = Interaction[InteractionData](**event["detail"])
 
     message = interaction.data.resolved.messages[interaction.data.target_id]
 
