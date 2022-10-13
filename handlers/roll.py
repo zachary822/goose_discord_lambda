@@ -1,5 +1,4 @@
 import logging
-import re
 import secrets
 from functools import cached_property
 
@@ -10,11 +9,15 @@ from goose_discord.schemas import Interaction, LambdaResponse, Option, SlashComm
 
 
 class Die(Option):
-    value: constr(regex=re.compile(r"^d\d+$", flags=re.I))  # type: ignore[valid-type]  # noqa: F722
+    value: constr(regex=r"^d\d+$")  # type: ignore[valid-type]  # noqa: F722
 
     @cached_property
     def sides(self) -> int:
         return int(self.value[1:])
+
+    class Config:
+        frozen = True
+        keep_untouched = (cached_property,)
 
 
 logger = logging.getLogger(__name__)
