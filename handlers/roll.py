@@ -3,7 +3,7 @@ import logging
 import boto3
 import requests
 
-from goose_discord.schemas import Interaction, LambdaResponse
+from goose_discord.schemas import Interaction, LambdaResponse, Option, SlashCommand
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ kms = boto3.client("kms")
 
 
 def handler(event, context):
-    interaction = Interaction(**event["detail"])
+    interaction = Interaction[SlashCommand[tuple[Option[int], Option[str]]]](**event["detail"])
     number, dice = interaction.data.options
 
     print(number, dice)

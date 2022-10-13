@@ -9,6 +9,9 @@ if TYPE_CHECKING:
 else:
     JsonStr = str
 
+T = TypeVar("T")
+F = TypeVar("F")
+
 
 class MentionType(str, Enum):
     roles = "roles"
@@ -63,17 +66,17 @@ class Member(BaseModel):
     user: User
 
 
-class Option(BaseModel):
+class Option(GenericModel, Generic[T]):
     type: int
     name: str
-    value: Any
+    value: T
 
 
-class SlashCommand(BaseModel):
+class SlashCommand(GenericModel, Generic[T]):
     id: str
     type: int
     name: str
-    options: Optional[list[Option]]
+    options: Optional[T]
 
 
 class Message(BaseModel):
@@ -91,9 +94,6 @@ class InteractionData(BaseModel):
     resolved: ResolvedData
     target_id: str
     type: int
-
-
-T = TypeVar("T")
 
 
 class Interaction(GenericModel, Generic[T]):
