@@ -1,6 +1,7 @@
 import logging
 import re
 import secrets
+from functools import cached_property
 
 import requests
 from pydantic import constr
@@ -11,12 +12,9 @@ from goose_discord.schemas import Interaction, LambdaResponse, Option, SlashComm
 class Die(Option):
     value: constr(regex=re.compile(r"^d\d+$", flags=re.I))  # type: ignore[valid-type]  # noqa: F722
 
-    @property
+    @cached_property
     def sides(self) -> int:
         return int(self.value[1:])
-
-    class Config:
-        frozen = True
 
 
 logger = logging.getLogger(__name__)
