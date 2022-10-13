@@ -4,7 +4,7 @@ import logging
 import boto3
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
-from pydantic import Json, SecretBytes, ValidationError, validator
+from pydantic import SecretBytes, ValidationError, validator
 
 from goose_discord.schemas import Interaction, LambdaResponse, SlashCommand
 from goose_discord.settings import CustomBaseSettings
@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 class Settings(CustomBaseSettings):
     PUBLIC_KEY: SecretBytes
-    QUOTES: Json[list[str]]
 
     @validator("PUBLIC_KEY", pre=True)
     def convert_public_key(cls, v):

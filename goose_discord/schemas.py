@@ -65,7 +65,7 @@ class Member(BaseModel):
 class Option(BaseModel):
     type: int
     name: str
-    value: str
+    value: Any
 
 
 class SlashCommand(BaseModel):
