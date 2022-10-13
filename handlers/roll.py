@@ -34,7 +34,7 @@ def handler(event, context):
         resp = session.patch(
             f"https://discord.com/api/webhooks/{interaction.application_id}/{interaction.token}/messages/@original",
             json={
-                "content": f"dice rolls ({rolls.value}{die.value}): {' '.join(map(str, (random.randint(1, die.sides + 1) for _ in range(rolls.value))))}",  # noqa: E501
+                "content": f"dice rolls ({rolls.value}{die.value}): {', '.join(map(str, (random.randint(1, die.sides + 1) for _ in range(rolls.value))))}",  # noqa: E501
             },
         )
         logger.info("status: %s body: %s", resp.status_code, resp.text)
